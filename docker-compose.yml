@@ -1,0 +1,18 @@
+version: "3"
+services:
+  db:
+    image: postgres:15.3
+    restart: always
+    ports:
+      - "${TYPEORM_PORT}:${TYPEORM_PORT}"
+    environment:
+      POSTGRES_PORT: ${TYPEORM_PORT}
+      POSTGRES_DB: ${TYPEORM_DATABASE}
+      POSTGRES_USER: ${TYPEORM_USERNAME}
+      POSTGRES_PASSWORD: ${TYPEORM_PASSWORD}
+
+  redis:
+    image: "redis:alpine"
+    restart: always
+    ports:
+      - 6379:6379

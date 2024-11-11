@@ -4,9 +4,10 @@ import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 dotenv.config();
 import { ConfigService } from 'nestjs-config';
+import { ConfigNames } from './lib/config';
+import { AppModule } from './modules/app';
 import { swaggerSetup } from './swagger-setup';
-import { AppModule } from './app.module';
-import { ConfigNames } from '@config/config-names.enum';
+import { RedisWebSocketAdapter } from '@websocket/adapter/redis.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -34,6 +35,7 @@ async function bootstrap() {
       transform: true,
     }),
   );
+  app.useWebSocketAdapter(new RedisWebSocketAdapter(app));
   if (commonConfig.env === 'development') {
     swaggerSetup(app);
   }
