@@ -28,8 +28,6 @@ export class OrderGateway {
     const { orderUUID } = data;
     const { order, orderItems } = await this.ordersService.getOrder(orderUUID);
 
-    console.log(order, 'order');
-
     if (order.orderStatus !== OrderStatus.NEW) {
       const errorMessage = 'Invalid order status';
 

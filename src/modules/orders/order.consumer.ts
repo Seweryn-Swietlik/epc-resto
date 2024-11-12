@@ -18,7 +18,6 @@ export class OrdersConsumer extends WorkerHost {
 
   async process(job: Job) {
     const { order } = job.data;
-    console.log(job.data, 'job.data');
     const { orderUUID } = order;
     const orderStatus = job.name as OrderStatus;
 
@@ -37,5 +36,6 @@ export class OrdersConsumer extends WorkerHost {
       `${ORDER_CHANNEL}-${orderUUID}`,
       job.data,
     );
+    this.pubSubService.publishMessage(ORDER_CHANNEL, job.data);
   }
 }
