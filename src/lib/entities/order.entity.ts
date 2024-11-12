@@ -13,28 +13,28 @@ import { DBTypes, OrderStatus } from '../types';
 @Entity({ name: 'order' })
 export class OrderEntity {
   @PrimaryGeneratedColumn('increment')
-  orderId!: number;
+  orderId: number;
 
   @Generated(DBTypes.UUID)
   @Column()
-  orderUUID!: string;
+  orderUUID: string;
 
   @Column({
     type: DBTypes.Enum,
     enum: OrderStatus,
     default: OrderStatus.NEW,
   })
-  orderStatus!: OrderStatus;
+  orderStatus: OrderStatus;
 
   @Column({ type: DBTypes.Decimal })
-  totalPrice!: number;
+  totalPrice: number;
 
   @CreateDateColumn({ select: false })
-  createdAt!: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ select: false })
-  updatedAt!: Date;
+  updatedAt: Date;
 
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.order)
-  orderItems!: Array<OrderItemEntity>;
+  orderItems: Array<OrderItemEntity>;
 }

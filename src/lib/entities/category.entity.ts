@@ -13,21 +13,21 @@ import { DBTypes } from '../types';
 @Entity({ name: 'category' })
 export class CategoryEntity {
   @PrimaryGeneratedColumn('increment')
-  categoryId!: number;
+  categoryId: number;
 
   @Generated(DBTypes.UUID)
   @Column()
-  categoryUUID!: string;
+  categoryUUID: string;
 
   @Column()
-  categoryName!: string;
+  categoryName: string;
 
   @CreateDateColumn({ select: false })
-  createdAt!: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ select: false })
-  updatedAt!: Date;
+  updatedAt: Date;
 
   @OneToMany(() => MealEntity, (meal) => meal.category)
-  meals!: Array<MealEntity>;
+  meals: Array<MealEntity>;
 }

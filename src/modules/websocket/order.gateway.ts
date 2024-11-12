@@ -12,7 +12,7 @@ import { Logger } from '@nestjs/common';
 export class WebsocketGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
-  @WebSocketServer() server!: Server;
+  @WebSocketServer() server: Server;
   private logger = new Logger(WebsocketGateway.name);
   private connectedClients: Map<string, Socket> = new Map();
 

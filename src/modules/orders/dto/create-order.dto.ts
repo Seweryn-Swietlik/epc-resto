@@ -6,5 +6,5 @@ export class CreateOrderDto {
   @ArrayNotEmpty()
   @ValidateNested({ each: true })
   @Type(() => OrderItemDto)
-  readonly orderItems!: Array<OrderItemDto>;
+  readonly orderItems: Array<OrderItemDto>;
 }

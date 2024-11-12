@@ -16,31 +16,31 @@ import { DBTypes } from '../types';
 @Entity({ name: 'meal' })
 export class MealEntity {
   @PrimaryGeneratedColumn('increment')
-  mealId!: number;
+  mealId: number;
 
   @Generated(DBTypes.UUID)
   @Column()
-  mealUUID!: string;
+  mealUUID: string;
 
   @Column()
-  mealName!: string;
+  mealName: string;
 
   @Column('decimal')
-  price!: number;
+  price: number;
 
   @Column(DBTypes.Int)
-  categoryId!: number;
+  categoryId: number;
 
   @CreateDateColumn({ select: false })
-  createdAt!: Date;
+  createdAt: Date;
 
   @UpdateDateColumn({ select: false })
-  updatedAt!: Date;
+  updatedAt: Date;
 
   @ManyToOne(() => CategoryEntity, (category) => category.meals)
   @JoinColumn({ name: 'categoryId' })
-  category!: CategoryEntity;
+  category: CategoryEntity;
 
   @OneToMany(() => OrderItemEntity, (orderItem) => orderItem.meal)
-  orderItems!: Array<OrderItemEntity>;
+  orderItems: Array<OrderItemEntity>;
 }

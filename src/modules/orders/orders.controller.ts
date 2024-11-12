@@ -1,10 +1,9 @@
 import { Body, Controller, Post, Query, Sse } from '@nestjs/common';
-import { InjectQueue } from '@nestjs/bullmq';
-import { Queue } from 'bullmq';
 import { Observable, interval, map, merge } from 'rxjs';
 import { CreateOrderDto, GetOrderDto, GetOrdersDto } from './dto';
-import { ORDERS_QUEUE_NAME, ORDER_CHANNEL, PING_INTERVAL } from './constants';
+import { ORDER_CHANNEL, PING_INTERVAL } from './constants';
 import { Order } from './types';
+import { CreateOrderResponse } from './response';
 import { OrdersService } from './orders.service';
 import { PubSubService } from '@redis/pub-sub.service';
 
@@ -13,11 +12,10 @@ export class OrdersController {
   constructor(
     private readonly ordersService: OrdersService,
     private readonly pubSubService: PubSubService<Order>,
-    @InjectQueue(ORDERS_QUEUE_NAME) private readonly ordersQueue: Queue,
   ) {}
 
   @Post()
-  createOrder(@Body() dto: CreateOrderDto) {
+  createOrder(@Body() dto: CreateOrderDto): Promise<CreateOrderResponse> {
     return this.ordersService.createOrder(dto);
   }
 
@@ -49,7 +47,7 @@ export class OrdersController {
     const channel = `${ORDER_CHANNEL}-${orderUUID}`;
     const ping$ = interval(PING_INTERVAL).pipe(map(() => ({ data: 'ping' })));
 
-    const csvStatus = new Observable((observer) => {
+    const orderStream$ = new Observable((observer) => {
       this.ordersService.getOrder(orderUUID).then((order) => {
         observer.next({ data: order });
       });
@@ -62,6 +60,6 @@ export class OrdersController {
       };
     });
 
-    return merge(ping$, csvStatus);
+    return merge(ping$, orderStream$);
   }
 }

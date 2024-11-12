@@ -15,7 +15,7 @@ import { OrdersService } from './orders.service';
 
 @WebSocketGateway({ path: '/websocket' })
 export class OrderGateway {
-  @WebSocketServer() server!: Server;
+  @WebSocketServer() server: Server;
   private logger = new Logger(OrderGateway.name);
 
   constructor(
